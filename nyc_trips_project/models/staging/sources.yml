@@ -1,0 +1,61 @@
+version: 2
+
+sources:
+  - name: tlc
+    database: airbnb-project-501607
+    schema: nyc_tlc_trips
+    description: "This is the source data for the NYC Taxi and Limousine Commission (TLC) trip records."
+
+    tables:
+      - name: tlc_yellow_trips_2022
+        description: "Yellow taxi trips for 2022, full calendar year"
+        columns:
+          - name: vendor_id
+            description: Code indicating the TPEP provider.
+            tests:
+              - not_null
+          - name: pickup_datetime
+            description: The datetime when the trip was picked up.
+            tests:
+              - not_null
+          - name: fare_amount
+            description: The fare amount for the trip.
+            tests:
+              - dbt_utils.accepted_range:
+                  min_value: 0
+                  config:
+                    severity: warn
+          - name: total_amount
+            description: The total amount for the trip.
+            tests:
+              - not_null
+              - dbt_utils.accepted_range:
+                  min_value: 0
+                  config:
+                    severity: warn
+
+      - name: tlc_green_trips_2022
+        description: "Green taxi trips for 2022, full calendar year"
+        columns:
+          - name: vendor_id
+            description: Code indicating the LPEP provider.
+            tests:
+              - not_null
+          - name: pickup_datetime
+            description: The datetime when the trip was picked up.
+            tests:
+              - not_null
+          - name: fare_amount
+            tests:
+              - dbt_utils.accepted_range:
+                  min_value: 0
+                  config:
+                    severity: warn
+          - name: total_amount
+            description: The total amount for the trip.
+            tests:
+              - not_null
+              - dbt_utils.accepted_range:
+                  min_value: 0
+                  config:
+                    severity: warn
