@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: int_trips_unioned
+    description: >
+      Union of yellow and green taxi trips, conformed to a shared shape,
+      with a generated trip_id and data-quality flags. Rows are never
+      dropped here — flags let downstream consumers decide how to handle
+      anomalies.
+
+    columns:
+      - name: trip_id
+        description: Surrogate key generated from taxi_type, vendor_id, pickup_datetime, pickup_location_id.
+        tests:
+          - unique
+          - not_null
+
+      - name: taxi_type
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['yellow', 'green']
+
+      - name: is_invalid_timestamps
+        tests:
+          - not_null
+
+      - name: is_suspicious_trip
+        tests:
+          - not_null
+
