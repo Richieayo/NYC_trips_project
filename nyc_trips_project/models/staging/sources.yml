@@ -59,3 +59,16 @@ sources:
                   min_value: 0
                   config:
                     severity: warn
+      
+
+      - name: taxi_zone_geom
+        description: "TLC Taxi zone lookup - location_id to borough/zone mapping"
+        columns:
+          - name: zone_id
+            tests:
+              - unique:
+                  config:
+                    severity: warn
+              - not_null:
+                  config:
+                    severity: warn

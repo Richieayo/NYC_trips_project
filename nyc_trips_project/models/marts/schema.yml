@@ -1,0 +1,10 @@
+version: 2
+
+models:
+  - name: dim_location
+    description: TLC taxi zone dimension — one row per zone.
+    columns:
+      - name: location_id
+        tests:
+          - unique
+          - not_null
