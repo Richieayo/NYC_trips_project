@@ -1,6 +1,31 @@
 version: 2
 
 models:
+  - name: fct_trip_metrics
+    description: >
+      One row per trip (net of refund pairs), grain = trip_id.
+      Excludes rows with invalid timestamps (see int_trips_unioned for
+      the full audit trail and the analysis behind that exclusion).
+    columns:
+      - name: trip_id
+        tests:
+          - unique
+          - not_null
+      - name: pickup_location_id
+        tests:
+          - relationships:
+              to: ref('dim_location')
+              field: location_id
+      - name: dropoff_location_id
+        tests:
+          - relationships:
+              to: ref('dim_location')
+              field: location_id
+      - name: payment_type_label
+        tests:
+          - accepted_values:
+              values: ['Flex Fare', 'Credit Card', 'Cash', 'No Charge', 'Dispute', 'Unknown', 'Voided', 'Unrecognized']
+
   - name: dim_location
     description: TLC taxi zone dimension — one row per zone.
     columns:
