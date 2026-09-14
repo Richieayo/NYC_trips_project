@@ -12,7 +12,7 @@ models:
       - name: trip_id
         description: Surrogate key generated from taxi_type, vendor_id, pickup_datetime, pickup_location_id.
         tests:
-          - unique
+        #  - unique  #Unique test removed due to duplicates expected here (refund pairs)
           - not_null
 
       - name: taxi_type

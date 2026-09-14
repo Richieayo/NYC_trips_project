@@ -11,25 +11,50 @@ models:
         tests:
           - unique
           - not_null
+
       - name: pickup_location_id
         tests:
+          - not_null
           - relationships:
               to: ref('dim_location')
               field: location_id
+
       - name: dropoff_location_id
         tests:
+          - not_null
           - relationships:
               to: ref('dim_location')
               field: location_id
+
       - name: payment_type_label
+        # 'Flex Fare' (payment_type = 0) post-dates the 2022 window;
+        # listed for forward-compatibility only.
         tests:
           - accepted_values:
-              values: ['Flex Fare', 'Credit Card', 'Cash', 'No Charge', 'Dispute', 'Unknown', 'Voided', 'Unrecognized']
+              values:
+                ['Flex Fare', 'Credit Card', 'Cash', 'No Charge',
+                 'Dispute', 'Unknown', 'Voided', 'Unrecognized']
+
+      - name: pickup_borough
+        tests:
+          - not_null
+
+      - name: dropoff_borough
+        tests:
+          - not_null
 
   - name: dim_location
     description: TLC taxi zone dimension — one row per zone.
     columns:
       - name: location_id
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_date
+    description: Calendar spine, one row per date, 2022-01-01 to 2022-12-31.
+    columns:
+      - name: date_key
         tests:
           - unique
           - not_null

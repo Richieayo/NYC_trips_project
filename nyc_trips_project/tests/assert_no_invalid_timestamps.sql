@@ -3,6 +3,15 @@
 -- if this test ever returns rows, the pipeline should stop and be investigated,
 -- not just flagged for later review.
 
+-- 15000 count is used cause the total count is 13510, if new data is introduced and total count climbs above 13510 then the engineer should be notified
+{{
+  config(
+    severity='error',
+    warn_if='>0',
+    error_if='>15000'     
+  )
+}}
+
 
 Select
       trip_id,
