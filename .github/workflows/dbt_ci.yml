@@ -1,0 +1,36 @@
+name: dbt CI
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  dbt_ci:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: nyc_trips_project
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Install dbt packages
+        run: uv run dbt deps
+
+      - name: Write service account key
+        run: echo '${{ secrets.DBT_KEYFILE_JSON }}' > /tmp/keyfile.json
+
+      - name: dbt build
+        env:
+          DBT_GCP_PROJECT: ${{ secrets.DBT_GCP_PROJECT }}
+          DBT_BQ_DATASET: ${{ secrets.DBT_BQ_DATASET }}
+          DBT_KEYFILE_PATH: /tmp/keyfile.json
+        run: uv run dbt build

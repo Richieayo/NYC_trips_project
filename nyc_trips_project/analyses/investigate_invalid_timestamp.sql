@@ -11,3 +11,4 @@ select
 from {{ ref('int_trips_unioned') }}
 where dropoff_datetime < pickup_datetime
 order by minutes_reversed desc
+

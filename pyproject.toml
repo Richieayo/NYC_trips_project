@@ -1,7 +1,7 @@
 [project]
 name = "dbt-nyc-trips"
 version = "0.1.0"
-description = "Add your description here"
+description = "End-to-end batch analytics mart built on NYC TLC taxi trip data using dbt and BigQuery"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
