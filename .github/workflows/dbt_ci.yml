@@ -26,11 +26,10 @@ jobs:
         run: uv run dbt deps
 
       - name: Write service account key
-        run: echo '${{ secrets.DBT_KEYFILE_JSON }}' > /tmp/keyfile.json
+        run: echo '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}' > /tmp/keyfile.json
 
       - name: dbt build
         env:
-          DBT_GCP_PROJECT: ${{ secrets.DBT_GCP_PROJECT }}
-          DBT_BQ_DATASET: ${{ secrets.DBT_BQ_DATASET }}
-          DBT_KEYFILE_PATH: /tmp/keyfile.json
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          GOOGLE_APPLICATION_CREDENTIALS: /tmp/keyfile.json
         run: uv run dbt build
